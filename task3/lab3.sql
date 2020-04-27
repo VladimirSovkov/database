@@ -1,4 +1,4 @@
---Очистка от прошлых данных
+--РћС‡РёСЃС‚РєР° РѕС‚ РїСЂРѕС€Р»С‹С… РґР°РЅРЅС‹С…
 
 TRUNCATE TABLE [company];
 
@@ -15,10 +15,10 @@ TRUNCATE TABLE [user];
 
 
 -------------------------------------------------------------------------
-				/* Оператор вставки INSERT */
+				/* РћРїРµСЂР°С‚РѕСЂ РІСЃС‚Р°РІРєРё INSERT */
 -------------------------------------------------------------------------
 
---1. Без указания списка полей
+--1. Р‘РµР· СѓРєР°Р·Р°РЅРёСЏ СЃРїРёСЃРєР° РїРѕР»РµР№
 --	INSERT INTO table_name VALUES (value1, value2, value3, ...);
 
 INSERT INTO [user] VALUES('Ivanov', 'Georg', 'Ivanovich', '01.01.2001', 'mail@mail.ru', '+7 999-111-22-33');
@@ -28,7 +28,7 @@ INSERT INTO [computer] VALUES('desktop-12313', 'Windows', '1', 'desktop');
 INSERT INTO [program] VALUES('swap', '1', 'windows', '1');
 INSERT INTO [installed_program] VALUES('1', '1', '01.01.2020', 'TRUE', '0');
 
---2. С указанием списка полей
+--2. РЎ СѓРєР°Р·Р°РЅРёРµРј СЃРїРёСЃРєР° РїРѕР»РµР№
 --	INSERT INTO table_name (column1, column2, column3, ...) VALUES (value1, value2, value3, ...);
 
 INSERT INTO [user] 
@@ -46,7 +46,7 @@ INSERT INTO [company]
 VALUES
 	('EA', '2', '30.09.2010', '+7 333-222-11-00', 'yandex@mail.ru');
 
---3. С чтением значения из другой таблицы
+--3. РЎ С‡С‚РµРЅРёРµРј Р·РЅР°С‡РµРЅРёСЏ РёР· РґСЂСѓРіРѕР№ С‚Р°Р±Р»РёС†С‹
 --	INSERT INTO table2 (column_name(s)) SELECT column_name(s) FROM table1;
 
 INSERT INTO [user]
@@ -60,17 +60,17 @@ FROM
 						--2. DELETE
 -----------------------------------------------------------------------------
 
---1. Всех записей
+--1. Р’СЃРµС… Р·Р°РїРёСЃРµР№
 
 DELETE [installed_program]
 SELECT * FROM [installed_program]
 
---2. По условию
+--2. РџРѕ СѓСЃР»РѕРІРёСЋ
 --	DELETE FROM table_name WHERE condition;
 
 DELETE FROM [user] WHERE surname = 'Ivanov';
 
---3. Очистить таблицу
+--3. РћС‡РёСЃС‚РёС‚СЊ С‚Р°Р±Р»РёС†Сѓ
 --	TRUNCATE
 
 TRUNCATE TABLE [computer];
@@ -80,7 +80,7 @@ TRUNCATE TABLE[user];
 SELECT*FROM[user];
 
 -------------------------------------------------------
--- Добавил значения в таблицы 
+-- Р”РѕР±Р°РІРёР» Р·РЅР°С‡РµРЅРёСЏ РІ С‚Р°Р±Р»РёС†С‹ 
 -------------------------------------------------------
 
 INSERT INTO [user] VALUES('Ivanov', 'Georg', 'Ivanovich', '01.01.2001', 'mail@mail.ru', '+7 999-111-22-33');
@@ -98,14 +98,14 @@ INSERT INTO [program] VALUES('swap', '1', 'windows', '1');
 --                       3. UPDATE
 ------------------------------------------------------------------
 
---1. Всех записей
--- Если не задана консрукция WHERE, то изменяется весь столбец на указанное значение
+--1. Р’СЃРµС… Р·Р°РїРёСЃРµР№
+-- Р•СЃР»Рё РЅРµ Р·Р°РґР°РЅР° РєРѕРЅСЃСЂСѓРєС†РёСЏ WHERE, С‚Рѕ РёР·РјРµРЅСЏРµС‚СЃСЏ РІРµСЃСЊ СЃС‚РѕР»Р±РµС† РЅР° СѓРєР°Р·Р°РЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ
 
 UPDATE [user]
 SET surname = 'Romanov' 
 SELECT * FROM [user];
 
---2. По условию обновляя один атрибут
+--2. РџРѕ СѓСЃР»РѕРІРёСЋ РѕР±РЅРѕРІР»СЏСЏ РѕРґРёРЅ Р°С‚СЂРёР±СѓС‚
 --		UPDATE table_name SET column1 = value1, column2 = value2, ... WHERE condition;
 
 UPDATE [user] 
@@ -114,7 +114,7 @@ WHERE
 	name = 'Georg';
 SELECT * FROM [user];
 
---3. По условию обновляя несколько атрибутов
+--3. РџРѕ СѓСЃР»РѕРІРёСЋ РѕР±РЅРѕРІР»СЏСЏ РЅРµСЃРєРѕР»СЊРєРѕ Р°С‚СЂРёР±СѓС‚РѕРІ
 --	UPDATE table_name SET column1 = value1, column2 = value2, ... WHERE condition;
 
 UPDATE [user] 
@@ -129,20 +129,20 @@ SELECT * FROM [user];
 --                          4. SELECT
 -------------------------------------------------------------------
 
---1. С определенным набором извлекаемых атрибутов (SELECT atr1, atr2 FROM...)
+--1. РЎ РѕРїСЂРµРґРµР»РµРЅРЅС‹Рј РЅР°Р±РѕСЂРѕРј РёР·РІР»РµРєР°РµРјС‹С… Р°С‚СЂРёР±СѓС‚РѕРІ (SELECT atr1, atr2 FROM...)
 
 SELECT surname, name FROM [user];
 
---2. Со всеми атрибутами (SELECT * FROM...)
+--2. РЎРѕ РІСЃРµРјРё Р°С‚СЂРёР±СѓС‚Р°РјРё (SELECT * FROM...)
 
 SELECT * FROM [director_company]
 
---3. С условием по атрибуту (SELECT * FROM ... WHERE atr1 = "")
+--3. РЎ СѓСЃР»РѕРІРёРµРј РїРѕ Р°С‚СЂРёР±СѓС‚Сѓ (SELECT * FROM ... WHERE atr1 = "")
 
 SELECT * FROM [user] WHERE name = 'Ivan';
 
 -------------------------------------------------------
--- Добавил значения в таблицы user, computer, installed_program
+-- Р”РѕР±Р°РІРёР» Р·РЅР°С‡РµРЅРёСЏ РІ С‚Р°Р±Р»РёС†С‹ user, computer, installed_program
 -------------------------------------------------------
 
 INSERT INTO [user] VALUES('Ivanov', 'Roman', 'Ivanovich', '01.01.2001', 'mail1@mail.ru', '+7 999-111-22-33');
@@ -155,17 +155,17 @@ INSERT INTO [user] VALUES('Shumilov', 'Egor', 'Aleksandrovich', '01.01.2007', 'm
 --                 5. SELECT ORDER BY + TOP (LIMIT)
 -------------------------------------------------------------------
 
---  1. С сортировкой по возрастанию ASC + ограничение вывода количества записей
+--  1. РЎ СЃРѕСЂС‚РёСЂРѕРІРєРѕР№ РїРѕ РІРѕР·СЂР°СЃС‚Р°РЅРёСЋ ASC + РѕРіСЂР°РЅРёС‡РµРЅРёРµ РІС‹РІРѕРґР° РєРѕР»РёС‡РµСЃС‚РІР° Р·Р°РїРёСЃРµР№
 
 SELECT TOP(4) * FROM [user]
 ORDER BY surname, name ASC 
 
---	2. С сортировкой по убыванию DESC
+--	2. РЎ СЃРѕСЂС‚РёСЂРѕРІРєРѕР№ РїРѕ СѓР±С‹РІР°РЅРёСЋ DESC
 
 SELECT * FROM [user]
 ORDER BY surname DESC 
 
- -- 3. С сортировкой по двум атрибутам + ограничение вывода количества записей
+ -- 3. РЎ СЃРѕСЂС‚РёСЂРѕРІРєРѕР№ РїРѕ РґРІСѓРј Р°С‚СЂРёР±СѓС‚Р°Рј + РѕРіСЂР°РЅРёС‡РµРЅРёРµ РІС‹РІРѕРґР° РєРѕР»РёС‡РµСЃС‚РІР° Р·Р°РїРёСЃРµР№
 
  SELECT TOP(1) * FROM [director_company]
 ORDER BY surname, name ASC 
@@ -173,27 +173,27 @@ ORDER BY surname, name ASC
 SELECT TOP(2) * FROM [user]
 ORDER BY  name, surname ASC 
 
--- 4. С сортировкой по первому атрибуту, из списка извлекаемых
+-- 4. РЎ СЃРѕСЂС‚РёСЂРѕРІРєРѕР№ РїРѕ РїРµСЂРІРѕРјСѓ Р°С‚СЂРёР±СѓС‚Сѓ, РёР· СЃРїРёСЃРєР° РёР·РІР»РµРєР°РµРјС‹С…
   
 SELECT * FROM [user]
 ORDER BY 1 
 
 -------------------------------------------------------------------------------
---6. Работа с датами. Необходимо, чтобы одна из таблиц содержала атрибут с типом DATETIME.
---    Например, таблица авторов может содержать дату рождения автора.
+--6. Р Р°Р±РѕС‚Р° СЃ РґР°С‚Р°РјРё. РќРµРѕР±С…РѕРґРёРјРѕ, С‡С‚РѕР±С‹ РѕРґРЅР° РёР· С‚Р°Р±Р»РёС† СЃРѕРґРµСЂР¶Р°Р»Р° Р°С‚СЂРёР±СѓС‚ СЃ С‚РёРїРѕРј DATETIME.
+--    РќР°РїСЂРёРјРµСЂ, С‚Р°Р±Р»РёС†Р° Р°РІС‚РѕСЂРѕРІ РјРѕР¶РµС‚ СЃРѕРґРµСЂР¶Р°С‚СЊ РґР°С‚Сѓ СЂРѕР¶РґРµРЅРёСЏ Р°РІС‚РѕСЂР°.
 --------------------------------------------------------------------------------
 
---1. WHERE по дате
+--1. WHERE РїРѕ РґР°С‚Рµ
 
 SELECT * FROM [user] WHERE date_of_birth = '03.05.2002';
 
---2. Извлечь из таблицы не всю дату, а только год. Например, год рождения автора.
---       Для этого используется функция YEAR 
+--2. РР·РІР»РµС‡СЊ РёР· С‚Р°Р±Р»РёС†С‹ РЅРµ РІСЃСЋ РґР°С‚Сѓ, Р° С‚РѕР»СЊРєРѕ РіРѕРґ. РќР°РїСЂРёРјРµСЂ, РіРѕРґ СЂРѕР¶РґРµРЅРёСЏ Р°РІС‚РѕСЂР°.
+--       Р”Р»СЏ СЌС‚РѕРіРѕ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ С„СѓРЅРєС†РёСЏ YEAR 
 
 SELECT YEAR(date_of_birth), name  FROM [user] ;
 
 ---------------------------------------------------------------------------------
---				7. SELECT GROUP BY с функциями агрегации
+--				7. SELECT GROUP BY СЃ С„СѓРЅРєС†РёСЏРјРё Р°РіСЂРµРіР°С†РёРё
 ------------------------------------------------------------------------------
 
 INSERT INTO [user] VALUES('Loginov', 'Ivan', 'Nicolaevich', '21.02.1980', 'yandex@gmail.com', '+7 999-432-12-34');
@@ -270,21 +270,21 @@ HAVING SUM(id_company) > 6;
 --						9. SELECT JOIN
 ------------------------------------------------------------------
 
---1. LEFT JOIN двух таблиц и WHERE по одному из атрибутов
+--1. LEFT JOIN РґРІСѓС… С‚Р°Р±Р»РёС† Рё WHERE РїРѕ РѕРґРЅРѕРјСѓ РёР· Р°С‚СЂРёР±СѓС‚РѕРІ
 
 SELECT [user].name, [director_company].name
 FROM [user]
 LEFT JOIN [director_company] ON [user].name = [director_company].name
 
--- 2. RIGHT JOIN. Получить такую же выборку, как и в 5.1
+-- 2. RIGHT JOIN. РџРѕР»СѓС‡РёС‚СЊ С‚Р°РєСѓСЋ Р¶Рµ РІС‹Р±РѕСЂРєСѓ, РєР°Рє Рё РІ 5.1
 
 SELECT TOP(4) *
 FROM [user]
 RIGHT JOIN [director_company] ON [user].name = [director_company].name
 ORDER BY [user].surname, [user].name ASC;
 
---3. LEFT JOIN трех таблиц + WHERE по атрибуту из каждой таблицы
---выведет список установленных прграмм на комьютерах
+--3. LEFT JOIN С‚СЂРµС… С‚Р°Р±Р»РёС† + WHERE РїРѕ Р°С‚СЂРёР±СѓС‚Сѓ РёР· РєР°Р¶РґРѕР№ С‚Р°Р±Р»РёС†С‹
+--РІС‹РІРµРґРµС‚ СЃРїРёСЃРѕРє СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅС‹С… РїСЂРіСЂР°РјРј РЅР° РєРѕРјСЊСЋС‚РµСЂР°С…
 
 SELECT [program].name, [program].software_requirement, [computer].name, [computer].operating_system
 FROM [installed_program]
@@ -293,24 +293,24 @@ LEFT JOIN [computer] ON [computer].id_computer = [installed_program].id_computer
 WHERE [program].id_program IS NOT NULL;
 
 
---4. FULL OUTER JOIN двух таблиц
+--4. FULL OUTER JOIN РґРІСѓС… С‚Р°Р±Р»РёС†
 
 SELECT *
 FROM [user]
 FULL OUTER JOIN [director_company] ON [user].name = [director_company].name;
 
 ------------------------------------------------------
---					10. Подзапросы
+--					10. РџРѕРґР·Р°РїСЂРѕСЃС‹
 ------------------------------------------------------
 
---1. Написать запрос с WHERE IN (подзапрос)
+--1. РќР°РїРёСЃР°С‚СЊ Р·Р°РїСЂРѕСЃ СЃ WHERE IN (РїРѕРґР·Р°РїСЂРѕСЃ)
 SELECT id_user, name, date_of_birth
 FROM [user]
 WHERE date_of_birth IN (
 	SELECT date_of_birth FROM[director_company]
 )
 
---2. Написать запрос SELECT atr1, atr2, (подзапрос) FROM ...  
+--2. РќР°РїРёСЃР°С‚СЊ Р·Р°РїСЂРѕСЃ SELECT atr1, atr2, (РїРѕРґР·Р°РїСЂРѕСЃ) FROM ...  
 
 INSERT INTO [director_company] VALUES('Selivanov', 'Maksim', 'Vladimirovich', '23.02.1976', '+7 800-345-35-35', 'nazvanie_mail@yandex.ru');
 INSERT INTO [director_company] VALUES('Naumov', 'Konstantin', 'Ivanovich', '23.02.1976', '+7 800-355-35-35', 'nazvanie_mail@yandex.ru');

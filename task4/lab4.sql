@@ -1,4 +1,4 @@
---1.Добавить внешние ключи
+--1.Р”РѕР±Р°РІРёС‚СЊ РІРЅРµС€РЅРёРµ РєР»СЋС‡Рё
 ALTER TABLE booking
 ADD FOREIGN KEY (id_client) REFERENCES client (id_client);
 
@@ -15,7 +15,7 @@ ADD FOREIGN KEY (id_hotel) REFERENCES hotel (id_hotel);
 ALTER TABLE room
 ADD FOREIGN KEY (id_room_category) REFERENCES room_category (id_room_category);
 
---2 Выдать информацию о клиентах гостиницы “Космос”, проживающих в номерах категории “Люкс” на 1 апреля 2019г
+--2 Р’С‹РґР°С‚СЊ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РєР»РёРµРЅС‚Р°С… РіРѕСЃС‚РёРЅРёС†С‹ вЂњРљРѕСЃРјРѕСЃвЂќ, РїСЂРѕР¶РёРІР°СЋС‰РёС… РІ РЅРѕРјРµСЂР°С… РєР°С‚РµРіРѕСЂРёРё вЂњР›СЋРєСЃвЂќ РЅР° 1 Р°РїСЂРµР»СЏ 2019Рі
 
 SELECT client.id_client, client.name, client.phone FROM client
 INNER JOIN booking ON client.id_client = booking.id_client
@@ -24,12 +24,12 @@ INNER JOIN room ON room.id_room = room_in_booking.id_room
 INNER JOIN room_category ON room_category.id_room_category = room.id_room_category
 INNER JOIN hotel ON hotel.id_hotel = room.id_hotel
 WHERE 
-	hotel.name = 'Космос' and
-	room_category.name = 'Люкс' and
+	hotel.name = 'РљРѕСЃРјРѕСЃ' and
+	room_category.name = 'Р›СЋРєСЃ' and
 	room_in_booking.checkin_date <= '01.04.2019' and
 	room_in_booking.checkout_date > '01.04.2019';
 
---3. Дать список свободных номеров всех гостиниц на 22 апреля
+--3. Р”Р°С‚СЊ СЃРїРёСЃРѕРє СЃРІРѕР±РѕРґРЅС‹С… РЅРѕРјРµСЂРѕРІ РІСЃРµС… РіРѕСЃС‚РёРЅРёС† РЅР° 22 Р°РїСЂРµР»СЏ
 
 SELECT room.id_room, room.id_hotel, room.id_room_category, room.number, room.price FROM room
 WHERE id_room NOT IN (
@@ -37,7 +37,7 @@ WHERE id_room NOT IN (
 	WHERE room_in_booking.checkin_date <= '22.04.2019' and room_in_booking.checkout_date > '22.04.2019')
 ORDER BY room.id_room;
 
---4 Дать количество проживающих в гостинице “Космос” на 23 марта по каждой категории номеров
+--4 Р”Р°С‚СЊ РєРѕР»РёС‡РµСЃС‚РІРѕ РїСЂРѕР¶РёРІР°СЋС‰РёС… РІ РіРѕСЃС‚РёРЅРёС†Рµ вЂњРљРѕСЃРјРѕСЃвЂќ РЅР° 23 РјР°СЂС‚Р° РїРѕ РєР°Р¶РґРѕР№ РєР°С‚РµРіРѕСЂРёРё РЅРѕРјРµСЂРѕРІ
 
 SELECT COUNT(client.id_client) AS Counts, room_category.name FROM room_category
 INNER JOIN room ON room.id_room_category = room_category.id_room_category
@@ -46,25 +46,25 @@ INNER JOIN hotel ON hotel.id_hotel = room.id_hotel
 INNER JOIN booking ON booking.id_booking = room_in_booking.id_booking
 INNER JOIN client ON client.id_client = booking.id_client
 WHERE 
-	hotel.name = 'Космос' and
+	hotel.name = 'РљРѕСЃРјРѕСЃ' and
 	room_in_booking.checkin_date <= '23.03.2019' and 
 	room_in_booking.checkout_date > '23.03.2019'
 GROUP BY room_category.name
 
---5. Дать список последних проживавших клиентов по всем комнатам гостиницы “Космос”, выехавшим в апреле с указанием даты выезда
+--5. Р”Р°С‚СЊ СЃРїРёСЃРѕРє РїРѕСЃР»РµРґРЅРёС… РїСЂРѕР¶РёРІР°РІС€РёС… РєР»РёРµРЅС‚РѕРІ РїРѕ РІСЃРµРј РєРѕРјРЅР°С‚Р°Рј РіРѕСЃС‚РёРЅРёС†С‹ вЂњРљРѕСЃРјРѕСЃвЂќ, РІС‹РµС…Р°РІС€РёРј РІ Р°РїСЂРµР»Рµ СЃ СѓРєР°Р·Р°РЅРёРµРј РґР°С‚С‹ РІС‹РµР·РґР°
 
 SELECT client.id_client, client.name, room_in_booking.checkout_date FROM client
 INNER JOIN booking ON booking.id_client = client.id_client
 INNER JOIN room_in_booking ON room_in_booking.id_booking = booking.id_booking
 INNER JOIN room ON room_in_booking.id_room = room.id_room
 INNER JOIN (SELECT hotel.id_hotel, hotel.name FROM hotel
-	WHERE hotel.name = 'Космос') AS Hotel ON Hotel.id_hotel = room.id_hotel
+	WHERE hotel.name = 'РљРѕСЃРјРѕСЃ') AS Hotel ON Hotel.id_hotel = room.id_hotel
 WHERE 
 	room_in_booking.checkout_date >= '01.04.2019' and 
 	room_in_booking.checkout_date < '01.05.2019'
 GROUP BY room_in_booking.checkout_date, client.id_client, client.name
 
---6. Продлить на 2 дня дату проживания в гостинице “Космос” всем клиентам комнат категории “Бизнес”, которые заселились 10 мая
+--6. РџСЂРѕРґР»РёС‚СЊ РЅР° 2 РґРЅСЏ РґР°С‚Сѓ РїСЂРѕР¶РёРІР°РЅРёСЏ РІ РіРѕСЃС‚РёРЅРёС†Рµ вЂњРљРѕСЃРјРѕСЃвЂќ РІСЃРµРј РєР»РёРµРЅС‚Р°Рј РєРѕРјРЅР°С‚ РєР°С‚РµРіРѕСЂРёРё вЂњР‘РёР·РЅРµСЃвЂќ, РєРѕС‚РѕСЂС‹Рµ Р·Р°СЃРµР»РёР»РёСЃСЊ 10 РјР°СЏ
 
 UPDATE room_in_booking
 SET room_in_booking.checkout_date = DATEADD(day, 2, checkout_date)
@@ -73,11 +73,11 @@ INNER JOIN room ON room.id_room = room_in_booking.id_room
 INNER JOIN hotel ON hotel.id_hotel = room.id_hotel
 INNER JOIN room_category ON room_category.id_room_category = room.id_room_category
 WHERE 
-	hotel.name = 'Космос' and
-	room_category.name = 'Бизнес' and
+	hotel.name = 'РљРѕСЃРјРѕСЃ' and
+	room_category.name = 'Р‘РёР·РЅРµСЃ' and
 	room_in_booking.checkin_date = '10.05.2019';
 
---7 Найти все "пересекающиеся" варианты проживания  
+--7 РќР°Р№С‚Рё РІСЃРµ "РїРµСЂРµСЃРµРєР°СЋС‰РёРµСЃСЏ" РІР°СЂРёР°РЅС‚С‹ РїСЂРѕР¶РёРІР°РЅРёСЏ  
 SELECT * 
 FROM room_in_booking room_in_booking1, room_in_booking room_in_booking2
 WHERE 
@@ -86,13 +86,13 @@ WHERE
 	((room_in_booking2.checkin_date <= room_in_booking1.checkin_date and room_in_booking2.checkout_date > room_in_booking1.checkin_date))
 ORDER BY room_in_booking1.id_room_in_booking;
 
---8 Создать бронирование в транзакции
+--8 РЎРѕР·РґР°С‚СЊ Р±СЂРѕРЅРёСЂРѕРІР°РЅРёРµ РІ С‚СЂР°РЅР·Р°РєС†РёРё
 
 BEGIN TRANSACTION
 	INSERT INTO booking VALUES(1, '01.04.2020');
 COMMIT;
 
---9. Добавить необходимые индексы для всех таблиц
+--9. Р”РѕР±Р°РІРёС‚СЊ РЅРµРѕР±С…РѕРґРёРјС‹Рµ РёРЅРґРµРєСЃС‹ РґР»СЏ РІСЃРµС… С‚Р°Р±Р»РёС†
 
 --client
 
