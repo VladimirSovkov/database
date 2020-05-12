@@ -107,11 +107,6 @@ CREATE NONCLUSTERED INDEX[IX_dealer_id_company] ON dealer
 	id_company ASC
 );
 
-CREATE NONCLUSTERED INDEX[IX_dealer_phone] ON dealer
-(
-	phone ASC
-);
-
 CREATE NONCLUSTERED INDEX[IX_production_id_company] ON production
 (
 	id_company ASC

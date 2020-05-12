@@ -52,17 +52,25 @@ WHERE
 GROUP BY room_category.name
 
 --5. Дать список последних проживавших клиентов по всем комнатам гостиницы “Космос”, выехавшим в апреле с указанием даты выезда
+--гость, номер и дата 
 
-SELECT client.id_client, client.name, room_in_booking.checkout_date FROM client
+SELECT client.name, room_in_booking.id_room, MAX(room_in_booking.checkout_date)
+FROM client
 INNER JOIN booking ON booking.id_client = client.id_client
 INNER JOIN room_in_booking ON room_in_booking.id_booking = booking.id_booking
 INNER JOIN room ON room_in_booking.id_room = room.id_room
 INNER JOIN (SELECT hotel.id_hotel, hotel.name FROM hotel
 	WHERE hotel.name = 'Космос') AS Hotel ON Hotel.id_hotel = room.id_hotel
-WHERE 
-	room_in_booking.checkout_date >= '01.04.2019' and 
-	room_in_booking.checkout_date < '01.05.2019'
-GROUP BY room_in_booking.checkout_date, client.id_client, client.name
+INNER JOIN (  SELECT room_in_booking.id_room, MAX(room_in_booking.checkout_date) AS last_data
+			FROM room_in_booking
+			WHERE 
+				room_in_booking.checkout_date >= '01.04.2019' AND
+				room_in_booking.checkout_date < '01.05.2019'
+				GROUP BY room_in_booking.id_room) AS date_of_last_stay_in_room
+ON date_of_last_stay_in_room.id_room = room_in_booking.id_room
+WHERE date_of_last_stay_in_room.last_data = room_in_booking.checkout_date
+GROUP BY client.name, room_in_booking.id_room
+ORDER BY client.name
 
 --6. Продлить на 2 дня дату проживания в гостинице “Космос” всем клиентам комнат категории “Бизнес”, которые заселились 10 мая
 
@@ -87,24 +95,12 @@ WHERE
 ORDER BY room_in_booking1.id_room_in_booking;
 
 --8 Создать бронирование в транзакции
-
 BEGIN TRANSACTION
 	INSERT INTO booking VALUES(1, '01.04.2020');
-COMMIT;
+	INSERT INTO room_in_booking VALUES(2001, 1, '22.04.2020', '30.04.2020');
+ROLLBACK;
 
 --9. Добавить необходимые индексы для всех таблиц
-
---client
-
-CREATE UNIQUE NONCLUSTERED INDEX[IX_client_phone] ON client
-(
-	phone ASC
-)
-
-CREATE NONCLUSTERED INDEX[IX_client_name] ON client
-(
-	name ASC
-)
 
 -- booking
 CREATE NONCLUSTERED INDEX[IX_booling_id_client_booking_date] ON booking
@@ -123,6 +119,16 @@ CREATE NONCLUSTERED INDEX[IX_room_in_booking_checkin_date_checkout_date] ON room
 (
 	checkin_date ASC,
 	checkout_date ASC
+)
+
+CREATE NONCLUSTERED INDEX[IX_room_in_booking_id_booking] ON room_in_booking
+(
+	id_booking ASC
+)
+
+CREATE NONCLUSTERED INDEX[IX_room_in_booking_id_room] ON room_in_booking
+(
+	id_room ASC
 )
 
 --room
@@ -148,14 +154,8 @@ CREATE UNIQUE NONCLUSTERED INDEX[IX_hotel_name] ON hotel
 	name ASC
 )
 
-CREATE NONCLUSTERED INDEX[IX_hotel_stars] ON hotel
-(
-	stars ASC
-)
-
 --room_category
 CREATE NONCLUSTERED INDEX[IX_category_name] ON room_category
 (
 	name ASC
 )
-

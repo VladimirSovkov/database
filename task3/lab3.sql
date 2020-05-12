@@ -1,3 +1,5 @@
+USE [lw3]
+
 --Очистка от прошлых данных
 
 TRUNCATE TABLE [company];
@@ -242,6 +244,28 @@ GROUP BY name;
 ------------------------------------------------------------------
 --                8. SELECT GROUP BY + HAVING
 ------------------------------------------------------------------
+--найти директоров у которых больше 2 компаний 
+
+SELECT  director_company.surname, director_company.name, director_company.patronymic
+FROM company
+INNER JOIN director_company ON company.id_director_company = director_company.id_director_company
+GROUP BY company.id_director_company, director_company.surname, director_company.name, director_company.patronymic
+HAVING COUNT(company.id_director_company) > 2;
+
+---найти программы которые установлены больше чем на 2 компьютерах
+
+INSERT INTO computer VALUES ('destop-number', 'Windows', 2, 'desktop');
+
+INSERT INTO installed_program VALUES(2, 1, '2020-02-01', 'TRUE', 0);
+INSERT INTO installed_program VALUES(3, 1, '2020-02-01', 'TRUE', 0);
+INSERT INTO installed_program VALUES(1, 2, '2020-02-01', 'TRUE', 0);
+INSERT INTO installed_program VALUES(2, 2, '2020-02-01', 'TRUE', 0);
+INSERT INTO installed_program VALUES(2, 3, '2020-02-01', 'TRUE', 0);
+
+SELECT installed_program.id_computer
+FROM installed_program
+GROUP BY installed_program.id_computer
+HAVING COUNT(installed_program.id_computer) > 2;
 
 SELECT name, COUNT(id_company) AS [program]
 FROM [program]
@@ -276,7 +300,7 @@ SELECT [user].name, [director_company].name
 FROM [user]
 LEFT JOIN [director_company] ON [user].name = [director_company].name
 
--- 2. RIGHT JOIN. Получить такую же выборку, как и в 5.1
+-- 2. RIGHT JOIN. Получить такую же выборку, как и в 5.1 9ю1 9.1
 
 SELECT TOP(4) *
 FROM [user]
@@ -286,7 +310,7 @@ ORDER BY [user].surname, [user].name ASC;
 --3. LEFT JOIN трех таблиц + WHERE по атрибуту из каждой таблицы
 --выведет список установленных прграмм на комьютерах
 
-SELECT [program].name, [program].software_requirement, [computer].name, [computer].operating_system
+SELECT [program].name, [program].sofware_requirement, [computer].name, [computer].operating_system
 FROM [installed_program]
 LEFT JOIN [program] ON [program].id_program = [installed_program].id_program
 LEFT JOIN [computer] ON [computer].id_computer = [installed_program].id_computer
@@ -321,8 +345,3 @@ SELECT name, id_director_company,
 	FROM [company]
 )
 FROM [company];
-
-
-
-
-
