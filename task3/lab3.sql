@@ -284,10 +284,18 @@ FROM [user]
 GROUP BY surname
 HAVING MIN(date_of_birth) = '21.02.1980';
 
+
 SELECT name, SUM(id_company) AS [program]
 FROM [program]
 GROUP BY name
 HAVING SUM(id_company) > 6;
+
+--INSERT INTO [program] VALUES('swap', '1', 'windows', '1');
+
+SELECT program.id_company
+FROM program 
+GROUP BY program.id_company
+HAVING COUNT(id_company) > 2;
 
 
 ------------------------------------------------------------------
