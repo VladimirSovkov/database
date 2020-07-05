@@ -54,13 +54,12 @@ GROUP BY room_category.name
 --5. Дать список последних проживавших клиентов по всем комнатам гостиницы “Космос”, выехавшим в апреле с указанием даты выезда
 --гость, номер и дата 
 
-SELECT client.name, room_in_booking.id_room, MAX(room_in_booking.checkout_date)
+SELECT client.name, room_in_booking.id_room, room_in_booking.checkout_date
 FROM client
 INNER JOIN booking ON booking.id_client = client.id_client
 INNER JOIN room_in_booking ON room_in_booking.id_booking = booking.id_booking
 INNER JOIN room ON room_in_booking.id_room = room.id_room
-INNER JOIN (SELECT hotel.id_hotel, hotel.name FROM hotel
-	WHERE hotel.name = 'Космос') AS Hotel ON Hotel.id_hotel = room.id_hotel
+INNER JOIN hotel ON hotel.id_hotel = room.id_hotel
 INNER JOIN (  SELECT room_in_booking.id_room, MAX(room_in_booking.checkout_date) AS last_data
 			FROM room_in_booking
 			WHERE 
@@ -68,9 +67,10 @@ INNER JOIN (  SELECT room_in_booking.id_room, MAX(room_in_booking.checkout_date)
 				room_in_booking.checkout_date < '01.05.2019'
 				GROUP BY room_in_booking.id_room) AS date_of_last_stay_in_room
 ON date_of_last_stay_in_room.id_room = room_in_booking.id_room
-WHERE date_of_last_stay_in_room.last_data = room_in_booking.checkout_date
-GROUP BY client.name, room_in_booking.id_room
+WHERE date_of_last_stay_in_room.last_data = room_in_booking.checkout_date AND hotel.name = 'Космос' 
+GROUP BY client.name, room_in_booking.id_room, room_in_booking.checkout_date
 ORDER BY client.name
+
 
 --6. Продлить на 2 дня дату проживания в гостинице “Космос” всем клиентам комнат категории “Бизнес”, которые заселились 10 мая
 
@@ -97,7 +97,7 @@ ORDER BY room_in_booking1.id_room_in_booking;
 --8 Создать бронирование в транзакции
 BEGIN TRANSACTION
 	INSERT INTO booking VALUES(1, '01.04.2020');
-	INSERT INTO room_in_booking VALUES(2001, 1, '22.04.2020', '30.04.2020');
+	INSERT INTO room_in_booking VALUES(SCOPE_IDENTITY(), 1, '22.04.2020', '30.04.2020');
 ROLLBACK;
 
 --9. Добавить необходимые индексы для всех таблиц
