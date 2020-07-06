@@ -58,24 +58,38 @@ EXECUTE debtor_information @id_group = 4;
 
 -- 4 Дать среднюю оценку студентов по каждому предмету для тех предметов, по которым занимается не менее 35 студентов
 
-SELECT AVG(mark.mark), [subject].name
+
+
+--вывод каждого предмета для каждой группы 
+SELECT subject.name, AVG(mark.mark)
 FROM student
-INNER JOIN mark ON student.id_student = mark.id_student
-INNER JOIN lesson ON mark.id_lesson = lesson.id_lesson
-INNER JOIN [subject] ON lesson.id_subject = [subject].id_subject
-GROUP BY [subject].name, mark.mark
-HAVING COUNT(student.id_student) >= 35
-ORDER BY [subject].name
- 
---если занимается подразумевает получение оценок по предмету
-SELECT subject.name, AVG(mark.mark) AS average_mark
-FROM lesson
+JOIN [group] ON student.id_group = [group].id_group
+JOIN lesson ON [group].id_group = lesson.id_group
 JOIN subject ON lesson.id_subject = subject.id_subject
-JOIN [group] ON [group].id_group = lesson.id_group
 JOIN mark ON lesson.id_lesson = mark.id_lesson
-JOIN student ON mark.id_student = student.id_student
-GROUP BY subject.name
-HAVING COUNT(DISTINCT student.id_student) >= 35
+GROUP BY subject.name, student.id_group
+HAVING COUNT(DISTINCT student.id_student) >= 30
+
+
+
+
+
+
+
+----вывод среднего значения по предмету от всех групп 
+--SELECT subject.name, AVG(mark.mark)
+--FROM student
+--JOIN [group] ON student.id_group = [group].id_group
+--JOIN lesson ON [group].id_group = lesson.id_group
+--JOIN subject ON lesson.id_subject = subject.id_subject
+--JOIN mark ON lesson.id_lesson = mark.id_lesson
+--GROUP BY subject.name
+--HAVING COUNT(DISTINCT student.id_student) >= 30
+
+
+
+
+
 
 
 --5 Дать оценки студентов специальности ВМ по всем проводимым предметам с 
