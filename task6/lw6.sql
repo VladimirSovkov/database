@@ -67,6 +67,47 @@ GROUP BY [subject].name, mark.mark
 HAVING COUNT(student.id_student) >= 35
 ORDER BY [subject].name
 
+-- кол- во студентов в каждой группе 
+SELECT student.id_group, COUNT(student.id_group)
+FROM [group]
+JOIN student ON [group].id_group = student.id_group
+GROUP BY student.id_group
+
+--кол-во групп на одном предмете
+SELECT lesson.id_subject, COUNT(id_group)
+FROM lesson
+GROUP BY lesson.id_subject
+
+--оценки у 1 предмета
+SELECT lesson.id_subject, mark.marK
+FROM mark
+JOIN lesson ON mark.id_lesson = lesson.id_lesson
+WHERE lesson.id_subject = 1;
+
+
+--если занимается подразумевает то что студент находится в группе которая занимается этим предметом. 
+--При этом студент может и не получать оуенки(посещать занятия)
+
+SELECT subject.name, AVG(mark.mark) AS average_mark
+FROM lesson
+JOIN subject ON lesson.id_subject = subject.id_subject
+JOIN [group] ON [group].id_group = lesson.id_group
+JOIN mark ON lesson.id_lesson = mark.id_lesson
+JOIN student ON student.id_group = [group].id_group
+GROUP BY subject.name
+HAVING COUNT(DISTINCT student.id_student) >= 35
+ 
+--если занимается подразумевает получение оценок по предмету
+SELECT subject.name, AVG(mark.mark) AS average_mark
+FROM lesson
+JOIN subject ON lesson.id_subject = subject.id_subject
+JOIN [group] ON [group].id_group = lesson.id_group
+JOIN mark ON lesson.id_lesson = mark.id_lesson
+JOIN student ON mark.id_student = student.id_student
+GROUP BY subject.name
+HAVING COUNT(DISTINCT student.id_student) >= 35
+
+
 --5 Дать оценки студентов специальности ВМ по всем проводимым предметам с 
 --указанием группы, фамилии, предмета, даты. При отсутствии оценки заполнить
 --значениями NULL поля оценки
