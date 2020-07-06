@@ -68,7 +68,7 @@ JOIN lesson ON [group].id_group = lesson.id_group
 JOIN subject ON lesson.id_subject = subject.id_subject
 JOIN mark ON lesson.id_lesson = mark.id_lesson
 GROUP BY subject.name, student.id_group
-HAVING COUNT(DISTINCT student.id_student) >= 30
+HAVING COUNT(DISTINCT student.id_student) >= 35
 
 
 
